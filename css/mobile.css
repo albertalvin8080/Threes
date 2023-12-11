@@ -1,6 +1,9 @@
 @charset "UTF-8";
 
 .container {
+    /* impede que o header do browser no mobile atrapalhe com o scrolling */
+    height: 100%;
+    position:fixed;
     align-items: end;
 }
 
