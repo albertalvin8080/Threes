@@ -18,6 +18,10 @@
     --text-color: rgb(132, 132, 132);
 }
 
+body {
+    overscroll-behavior-y: contain;
+}
+
 button {
     display: flex;
     align-items: center;
