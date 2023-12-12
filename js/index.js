@@ -9,7 +9,7 @@ const threes = new Threes(threesNode, 4, 4);
 window.addEventListener("keydown", (evt) => {
 	// impede comportamento indefinido com relação aos setTimeouts dentro de Threes.js
 	// e garante que apertar as teclas repetidamente não vai quebrar as animações
-	// if (threes.onExecution.length > 0) return;
+	if (threes.onExecution.length > 0) return;
 	threes.movePieces(evt.key);
 });
 
