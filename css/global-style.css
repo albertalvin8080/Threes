@@ -170,6 +170,7 @@ button {
     padding: 15px;
     display: grid;
     gap: var(--gap);
+    max-height: 740px;
     position: relative;
     border-radius: 10px;
     justify-items: center;
