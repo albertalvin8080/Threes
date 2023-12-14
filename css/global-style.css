@@ -49,6 +49,7 @@ button {
     --threes-padding: 10px;
     --gap: 10px;
 
+    max-height: 740px;
     height: 95%;
     width: 450px;
     display: flex;
@@ -170,7 +171,6 @@ button {
     padding: 15px;
     display: grid;
     gap: var(--gap);
-    max-height: 740px;
     position: relative;
     border-radius: 10px;
     justify-items: center;

@@ -1,5 +1,3 @@
-"use strict";
-
 function obterCelulasDasBordas(matriz) {
 	const celulasBordas = [];
 

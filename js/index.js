@@ -1,5 +1,3 @@
-"use strict";
-
 import { Threes } from "./Threes.js";
 
 const threesNode = document.querySelector("#threes");

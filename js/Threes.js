@@ -1,5 +1,3 @@
-"use strict";
-
 import { obterCelulasDasBordas } from "./funcoes-utilitarias.js";
 
 class Threes {
