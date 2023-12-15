@@ -41,7 +41,7 @@ class Threes {
 		this.largura = largura;
 		this.parentNode = parentNode;
 
-		this.transition_miliseconds = 120; // milisegundos: muda a velocidade da execução
+		this.transition_miliseconds = 100; // milisegundos: muda a velocidade da execução
 		// this.transition_seconds = this.transition_miliseconds / 1000;
 		this.parentNode.style = `--transition-seconds: ${
 			this.transition_miliseconds / 1000
