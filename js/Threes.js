@@ -3,6 +3,8 @@ import { obterCelulasDasBordas } from "./funcoes-utilitarias.js";
 class Threes {
 	constructor(parentNode, altura, largura) {
 		this.resetAttributes(parentNode, "threes", altura, largura);
+		this.changeTheme("default"); // default theme
+		// this.changeTheme("fear-and-hunger"); // debug
 		this.init();
 	}
 
@@ -15,25 +17,32 @@ class Threes {
 
 		let fontSize;
 		let borderRadius;
-		// threes
-		if (storageNameItem === "threes") {
-			if (window.innerWidth < 700) {
-				borderRadius = "12px";
-				fontSize = "1.4rem";
-			} else {
-				borderRadius = "14px";
-				fontSize = "2.2rem";
-			}
-		} 
-		// super-threes
-		else {
-			if (window.innerWidth < 700) {
-				borderRadius = "7px";
-				fontSize = "0.85rem";
-			} else {
-				borderRadius = "8px";
-				fontSize = "1rem";
-			}
+		let boxShadow;
+		
+		switch (storageNameItem) {
+			case "threes":
+				if (window.innerWidth < 700) {
+					borderRadius = "12px";
+					fontSize = "1.4rem";
+					boxShadow = "6px";
+				} else {
+					borderRadius = "14px";
+					fontSize = "2.2rem";
+					boxShadow = "7px";
+				}
+				break;
+
+			case "super-threes":
+				if (window.innerWidth < 700) {
+					borderRadius = "7px";
+					fontSize = "0.85rem";
+					boxShadow = "4.5px";
+				} else {
+					borderRadius = "8px";
+					fontSize = "1rem";
+					boxShadow = "4px";
+				}
+				break;
 		}
 
 		this.score = 0;
@@ -45,7 +54,7 @@ class Threes {
 		// this.transition_seconds = this.transition_miliseconds / 1000;
 		this.parentNode.style = `--transition-seconds: ${
 			this.transition_miliseconds / 1000
-		}s; --piece-font-size: ${fontSize}; --border-radius: ${borderRadius};`;
+		}s; --piece-font-size: ${fontSize}; --border-radius: ${borderRadius}; --border-bottom-shadow: ${boxShadow};`;
 
 		this.storageNameItem = storageNameItem;
 
@@ -58,7 +67,7 @@ class Threes {
 		// garante que uma peça indesejada não apareça quando a transição ocorre com o random play ativo
 		// obs: não é necessário esvaziar o array aqui pois isso ocorrerá na função init() de qualquer forma
 		this.onExecution.forEach((timeout) => clearTimeout(timeout));
-		
+
 		// garante que o random play pare
 		clearInterval(this.random_play_interval);
 		this.random_play_interval = null;
@@ -72,6 +81,35 @@ class Threes {
 				break;
 		}
 		this.init();
+	}
+
+	changeTheme(value) {
+		switch(value) {
+			case "default":
+				document.body.style = `
+				--container-color: #F5FCCD;
+				--slot-color: #78D6C6;
+				--slots-color: #93e6d8;
+				--piece-one-color: #0F4471;
+				--piece-one-border-color: #072c4c;
+				--piece-two-color: #FC3C3C;
+				--piece-two-border-color: #B31312;
+				--text-color: rgb(50, 50, 50);
+				`;
+				break;
+			case "fear-and-hunger":
+				document.body.style = `
+				--container-color: #0e0b0a;
+				--slot-color: #A8A39D;
+				--slots-color: #8B8681;
+				--piece-one-color: #583725;
+				--piece-one-border-color: #322517;
+				--piece-two-color: #836A46;
+				--piece-two-border-color: #4f4b2f;
+				--text-color: rgb(255, 255, 255);
+				`;
+				break;
+		}
 	}
 
 	init() {
@@ -96,10 +134,21 @@ class Threes {
 			this.hud.innerHTML = `
 				<div id="next-piece-display"></div>
 				<div class="user-interaction">
-					<select name="threes-estilo" id="threes-estilo">
-						<option selected value="threes">Threes</option>
-						<option value="super-threes">Super Threes</option>
-					</select>
+					<div class="select-div">
+						<!--<label for="threes-estilo">Game Style</label>-->
+						<select name="threes-estilo" id="threes-estilo">
+							<option selected value="threes">Threes Layout</option>
+							<option value="super-threes">Super Threes Layout</option>
+						</select>
+					</div>
+					<div class="select-div">
+						<!--<label for="theme">Theme</label>-->
+						<select name="theme" id="theme">
+							<option selected value="default">Default Theme</option>
+							<option value="fear-and-hunger">Fear & Hunger Theme</option>
+						</select>
+					</div>
+					
 					<button type="button" id="random-play-button">Random Play</button>
 					<div id="restart-dialog">
 						<button type="button" id="restart-button">Restart</button>
@@ -109,7 +158,7 @@ class Threes {
 			// colocado aqui dentro para que os event listeners não sejam sobrescritos na transição de estilo
 			this.addEventListeners();
 		}
-		
+
 		this.parentNode.appendChild(this.hud);
 		this.nextPieceDisplay = this.hud.querySelector("#next-piece-display");
 		this.changeNextPiece();
@@ -577,7 +626,8 @@ class Threes {
 	notificarGameOver() {
 		this.isGameOver = true;
 		// faz a div com o botão de restart aparecer
-		this.hud.querySelector("#restart-dialog").style = "display: flex; animation: restart-dialog 1s ease forwards;";
+		this.hud.querySelector("#restart-dialog").style =
+			"display: flex; animation: restart-dialog 1s ease forwards;";
 		// faz com que não seja possívem interagir com o background (exceto a div de restart)
 		this.parentNode.style.pointerEvents = "none";
 		const gameOver = this.mensagens.querySelector("#game-over");
@@ -635,6 +685,13 @@ class Threes {
 			// garantindo que o foco vai sair do select
 			select.blur();
 		});
+
+		const threesTheme = this.hud.querySelector("#theme");
+		threesTheme.addEventListener("change", (evt) => {
+			const select = evt.target;
+			this.changeTheme(select.value);
+			select.blur();
+		})
 
 		const restartButton = this.hud.querySelector("#restart-button");
 		restartButton.addEventListener("click", () => {

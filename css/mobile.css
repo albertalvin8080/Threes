@@ -83,6 +83,8 @@
 #next-piece-display .template-piece {
     width: 60%;
     border-radius: 8px;
+    /* serve pra diferenciar de peças comuns */
+    --border-bottom-shadow: 5px; 
 }
 
 .user-interaction {
@@ -93,9 +95,27 @@
     /* border: 1px solid black; */
 }
 
-#threes-estilo {
+.div-select {
+    display: flex;
+    flex-direction: column;
+}
+
+select#threes-estilo {
     width: 100%;
     position: initial;
+    display: block;
+}
+
+/* select#threes-estilo::before {
+    content: 'Style';
+    right: 100%;
+    position: absolute;
+} */
+
+select#theme {
+    width: 100%;
+    position: initial;
+    display: block;
 }
 
 #random-play-button {
